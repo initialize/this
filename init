@@ -1,12 +1,33 @@
 #!/usr/bin/env bash
 
+checkbrew() {
+
+    if hash brew 2>/dev/null; then
+        brew update
+        brew upgrade
+        #install brew depends
+        brew install bash git wget curl vim
+
+        #do something else
+
+        #example - pipe remote script into bash with wget
+        #wget -qO - https://raw.githubusercontent.com/initialize/this/master/init | bash
+
+    else
+
+    #linuxbrew is now supported via bash script
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    checkbrew
+
+    fi
+}
+
 configGithub() {
 
     read -p "Config github? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-    #REF:https://help.github.com/en/github/authenticating-to-github/checking-for-existing-gpg-keys
-    gpg --list-secret-keys --keyid-format LONG
     read -p 'ENTER your Github.com username: ' GITHUB_USER_NAME
     #read -sp 'Password: ' GITHUB_USER_PASSWORD
     git config --global user.name $GITHUB_USER_NAME
@@ -35,12 +56,56 @@ configGithub() {
     chmod 600 ~/.ssh/$DATE.github_rsa
     chmod 644 ~/.ssh/$DATE.github_rsa.pub
 
+    echo
+    echo "Copy this public key to your github profile..."
+    echo
+    cat ~/.ssh/$DATE.github_rsa.pub
+    echo
 }
-configGithub
 
-echo
-echo "Copy this public key to your github profile..."
-echo
-cat ~/.ssh/$DATE.github_rsa.pub
-echo
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+
+    sudo apt update
+    sudo apt -y b bash git curl wget vim
+    #sudo apt install linuxbrew-wrapper
+
+    checkbrew
+
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+
+    checkbrew
+
+    #Additional configs darwin (macos gui)
+
+    brew install tccutil
+    curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
+    chmod a+x /usr/local/bin/dockutil
+
+    brew cask install --force iterm2
+    dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
+
+    brew cask install --force macvim
+    dockutil --add '/Applications/MacVim.app' --replacing 'MacVim'
+
+    brew cask install --force docker
+    dockutil --add '/Applications/Docker.app' --replacing 'Docker'
+
+    open /Applications/Docker.app
+
+    docker run hello-world
+
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+    echo TODO add support for $OSTYPE
+elif [[ "$OSTYPE" == "msys" ]]; then
+    echo TODO add support for $OSTYPE
+elif [[ "$OSTYPE" == "win32" ]]; then
+    echo TODO add support for $OSTYPE
+elif [[ "$OSTYPE" == "freebsd"* ]]; then
+    echo TODO add support for $OSTYPE
+else
+    echo TODO add support for $OSTYPE
+fi
+
+#the point
+configGithub
 
