@@ -25,6 +25,7 @@ checkbrew() {
 
 configGithub() {
 
+    #set global git config
     read -p "Config github? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -36,6 +37,19 @@ configGithub() {
     git config --global user.email $GITHUB_USER_EMAIL
     echo Thankyou $GITHUB_USER_NAME for your email.
     fi;
+
+    if ((${EUID:-0} || "$(id -u)")); then
+
+        echo You are not root.
+
+    else
+
+        echo Hello, root.
+        useradd $GITHUB_USER_NAME -s /bin/bash -p '*'
+        su $GITHUB_USER_NAME
+        cd /home/$GITHUB_USER_NAME
+
+    fi
 
 #REF: https://gist.github.com/grenade/6318301
 #REF: https://www.digitalocean.com/docs/droplets/resources/troubleshooting-ssh/authentication/#fixing-key-permissions-and-ownership
@@ -63,10 +77,11 @@ configGithub() {
     echo
 }
 
+init() {
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
     sudo apt update
-    sudo apt -y b bash git curl wget vim
+    sudo apt -y bash git curl wget vim
     #sudo apt install linuxbrew-wrapper
 
     checkbrew
@@ -92,7 +107,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     open /Applications/Docker.app
 
-    docker run hello-world
+    #docker run hello-world
 
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     echo TODO add support for $OSTYPE
@@ -106,11 +121,6 @@ else
     echo TODO add support for $OSTYPE
 fi
 
-#the point
+}
+init
 configGithub
-
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
-   exit 1
-fi
-
