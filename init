@@ -80,7 +80,7 @@ adduser() {
         read -p 'ENTER a non-root username: ' USER_NAME
         useradd -g users -G $USER_NAME -s /bin/bash -p '*'
         id $USER_NAME
-        #su $USER_NAME
+        su $USER_NAME
         #cd /home/$GITHUB_USER_NAME
         echo whoami
         #su $USER_NAME
