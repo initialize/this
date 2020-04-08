@@ -81,7 +81,7 @@ adduser() {
         id git
         su git
         #cd /home/git
-        echo whoami
+        whoami
 
     fi
 }
