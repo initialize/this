@@ -77,11 +77,10 @@ adduser() {
     else
 
         echo Hello, root.
-        read -p 'ENTER a non-root username: ' USER_NAME
-        useradd -g users -G $USER_NAME -s /bin/bash -p '*'
-        id $USER_NAME
-        su $USER_NAME
-        #cd /home/$GITHUB_USER_NAME
+        useradd -g users -G 'git' -s /bin/bash -p '*'
+        id git
+        su git
+        #cd /home/git
         echo whoami
 
     fi
@@ -99,6 +98,7 @@ init() {
         createkey
         adduser
         configGithub
+        su git
         checkbrew
 
     elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -106,6 +106,7 @@ init() {
         createkey
         adduser
         configGithub
+        su git
         checkbrew
 
         #Additional configs darwin (macos gui)
