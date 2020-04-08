@@ -92,20 +92,22 @@ init() {
 
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
-        sudo apt -y update
-        sudo apt -y install sudo openssh-server bash git curl wget
+        sudo apt -y -qq update
+        sudo apt -y -qq install sudo openssh-server bash git curl wget
         systemctl status ssh
 
         #sudo apt install linuxbrew-wrapper
         createkey
         adduser
         configGithub
+        checkbrew
 
     elif [[ "$OSTYPE" == "darwin"* ]]; then
 
         createkey
         adduser
         configGithub
+        checkbrew
 
         #Additional configs darwin (macos gui)
 
