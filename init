@@ -38,6 +38,9 @@ configGithub() {
     echo Thankyou $GITHUB_USER_NAME for your email.
     fi;
 
+i}
+
+createkey() {
 
 #REF: https://gist.github.com/grenade/6318301
 #REF: https://www.digitalocean.com/docs/droplets/resources/troubleshooting-ssh/authentication/#fixing-key-permissions-and-ownership
@@ -64,8 +67,6 @@ configGithub() {
     cat ~/.ssh/$DATE.github_rsa.pub
     echo
 }
-
-
 adduser() {
 
     if ((${EUID:-0} || "$(id -u)")); then
@@ -78,24 +79,28 @@ adduser() {
         read -p 'ENTER a non-root username: ' USER_NAME
         useradd -g users -G $USER_NAME -s /bin/bash -p '*'
         id $USER_NAME
-        su $USER_NAME
+        #su $USER_NAME
         #cd /home/$GITHUB_USER_NAME
-        whoami
+        echo whoami
+        #su $USER_NAME
 
     fi
 }
-
 init() {
+
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
-    sudo apt update
-    sudo apt -y bash git curl wget vim
+    sudo apt -y update
+    sudo apt -y git curl wget
+
     #sudo apt install linuxbrew-wrapper
+    createkey
     adduser
     configGithub
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 
+    createkey
     adduser
     configGithub
 
@@ -129,6 +134,6 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 else
     echo TODO add support for $OSTYPE
 fi
-
 }
 init
+
