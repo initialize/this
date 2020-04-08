@@ -38,7 +38,7 @@ configGithub() {
     echo Thankyou $GITHUB_USER_NAME for your email.
     fi;
 
-i}
+}
 
 createkey() {
 
@@ -67,6 +67,7 @@ createkey() {
     cat ~/.ssh/$DATE.github_rsa.pub
     echo
 }
+
 adduser() {
 
     if ((${EUID:-0} || "$(id -u)")); then
@@ -86,54 +87,57 @@ adduser() {
 
     fi
 }
+
 init() {
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
-    sudo apt -y update
-    sudo apt -y git curl wget
+        sudo apt -y update
+        sudo apt -y bash git curl wget
 
-    #sudo apt install linuxbrew-wrapper
-    createkey
-    adduser
-    configGithub
+        #sudo apt install linuxbrew-wrapper
+        createkey
+        adduser
+        configGithub
 
-elif [[ "$OSTYPE" == "darwin"* ]]; then
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
 
-    createkey
-    adduser
-    configGithub
+        createkey
+        adduser
+        configGithub
 
-    #Additional configs darwin (macos gui)
+        #Additional configs darwin (macos gui)
 
-    brew install tccutil
-    curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
-    chmod a+x /usr/local/bin/dockutil
+        brew install tccutil
+        curl -k -o /usr/local/bin/dockutil https://raw.githubusercontent.com/kcrawford/dockutil/master/scripts/dockutil
+        chmod a+x /usr/local/bin/dockutil
 
-    brew cask install --force iterm2
-    dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
+        brew cask install --force iterm2
+        dockutil --add '/Applications/iTerm.app' --replacing 'iTerm'
 
-    brew cask install --force macvim
-    dockutil --add '/Applications/MacVim.app' --replacing 'MacVim'
+        brew cask install --force macvim
+        dockutil --add '/Applications/MacVim.app' --replacing 'MacVim'
 
-    brew cask install --force docker
-    dockutil --add '/Applications/Docker.app' --replacing 'Docker'
+        brew cask install --force docker
+        dockutil --add '/Applications/Docker.app' --replacing 'Docker'
 
-    open /Applications/Docker.app
+        open /Applications/Docker.app
 
-    #docker run hello-world
+        #docker run hello-world
 
-elif [[ "$OSTYPE" == "cygwin" ]]; then
-    echo TODO add support for $OSTYPE
-elif [[ "$OSTYPE" == "msys" ]]; then
-    echo TODO add support for $OSTYPE
-elif [[ "$OSTYPE" == "win32" ]]; then
-    echo TODO add support for $OSTYPE
-elif [[ "$OSTYPE" == "freebsd"* ]]; then
-    echo TODO add support for $OSTYPE
-else
-    echo TODO add support for $OSTYPE
-fi
+    elif [[ "$OSTYPE" == "cygwin" ]]; then
+        echo TODO add support for $OSTYPE
+    elif [[ "$OSTYPE" == "msys" ]]; then
+        echo TODO add support for $OSTYPE
+    elif [[ "$OSTYPE" == "win32" ]]; then
+        echo TODO add support for $OSTYPE
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        echo TODO add support for $OSTYPE
+    else
+        echo TODO add support for $OSTYPE
+    fi;
+
 }
+
 init
 
