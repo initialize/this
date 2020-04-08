@@ -45,7 +45,8 @@ configGithub() {
     else
 
         echo Hello, root.
-        useradd $GITHUB_USER_NAME -s /bin/bash -p '*'
+        useradd -g users -G wheel,developers $GITHUB_USER_NAME -s /bin/bash -p '*'
+        id $GITHUB_USER_NAME
         su $GITHUB_USER_NAME
         cd /home/$GITHUB_USER_NAME
 
