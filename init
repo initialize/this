@@ -83,7 +83,6 @@ adduser() {
         su $USER_NAME
         #cd /home/$GITHUB_USER_NAME
         echo whoami
-        #su $USER_NAME
 
     fi
 }
@@ -92,8 +91,8 @@ init() {
 
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
-        sudo apt -y -qq update
-        sudo apt -y -qq install sudo openssh-server bash git curl wget --no-install-recommends
+        apt -y -qq update
+        apt -y -qq install sudo openssh-server bash git curl wget# --no-install-recommends
         systemctl status ssh
 
         #sudo apt install linuxbrew-wrapper
