@@ -93,7 +93,7 @@ init() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
         sudo apt -y update
-        sudo apt -y bash git curl wget
+        sudo apt -y install bash git curl wget
 
         #sudo apt install linuxbrew-wrapper
         createkey
