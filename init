@@ -93,7 +93,7 @@ init() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
         sudo apt -y -qq update
-        sudo apt -y -qq install sudo openssh-server bash git curl wget
+        sudo apt -y -qq install sudo openssh-server bash git curl wget --no-install-recommends
         systemctl status ssh
 
         #sudo apt install linuxbrew-wrapper
